@@ -31,7 +31,7 @@ const Toggle = () => {
       const storedUserData = await AsyncStorage.getItem("userData");
       if (storedUserData) {
         const parsedData = JSON.parse(storedUserData);
-        const isUser = parsedData.userType === "user";
+        const isUser = parsedData.data?.data?.userType === "user";
         setIsOn(isUser);
         toggleValue.value = withSpring(isUser ? 0 : 1); // Set the initial toggle state
       }
@@ -39,9 +39,7 @@ const Toggle = () => {
       console.log("Error fetching user data from storage:", err);
     }
   };
-  console.log("====================================");
-  console.log(userInfo?._id || data?.data?.data?._id);
-  console.log("====================================");
+
   useEffect(() => {
     setId(data?.data?.data?._id); // Set user ID from fetched data
     fetchUserDataFromStorage(); // Fetch the user data on mount
@@ -59,7 +57,6 @@ const Toggle = () => {
           userType: type, // Send the userType in the request body
         }),
       });
-      setUserInfo({ ...userInfo, userType: type });
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -68,21 +65,20 @@ const Toggle = () => {
       }
 
       const response = await res.json();
-      // console.log("Response from toggle:", response);
+      console.log("Response from toggle:", response);
 
-      // Update the userType in the existing userData object in AsyncStorage
+      // Update the userType in AsyncStorage and the global state
       const storedUserData = await AsyncStorage.getItem("userData");
-      // if (storedUserData) {
-      //   const parsedData = JSON.parse(storedUserData);
-      //   parsedData.userType = type; // Update the userType
-      //   await AsyncStorage.setItem("userData", JSON.stringify(parsedData)); // Save the updated data
-      // }
-      console.log("User type toggled successfully", storedUserData);
-      const data = JSON.parse(storedUserData);
-      data.data.data.userType = type;
-      await AsyncStorage.setItem("userData", JSON.stringify(data));
+      if (storedUserData) {
+        const parsedData = JSON.parse(storedUserData);
+        parsedData.data.data.userType = type; // Update the userType in AsyncStorage
+        await AsyncStorage.setItem("userData", JSON.stringify(parsedData)); // Save the updated data
+      }
 
-      console.log("data my data", data);
+      // Update global state with new userType
+      setUserInfo({ ...userInfo, userType: type });
+
+      console.log("User type toggled successfully", storedUserData);
     } catch (err) {
       console.log("Error in toggling user/rider:", err);
     }
@@ -93,9 +89,9 @@ const Toggle = () => {
     setIsOn(newToggleState); // Update state locally
     toggleValue.value = withSpring(newToggleState ? 0 : 1); // Animate the toggle
 
-    // Call the API when toggling
+    // Call the API to toggle user type when toggling
     if (id) {
-      await toggleType(id); // Make sure this call is made after state is updated
+      await toggleType(id); // Update the user type via the API
     }
   };
 

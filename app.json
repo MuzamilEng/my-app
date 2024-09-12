@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "rideBooking",
-    "slug": "dango",
+    "name": "pk-rider",
+    "slug": "pk-rider",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/appLogo.png",
@@ -46,7 +46,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "43863e14-dc0d-40bc-9680-54a93fc0f2f4"
+        "projectId": "e3c7321b-05b2-4a6c-872f-148b625b2681"
       }
     },
     "owner": "muzi22"
