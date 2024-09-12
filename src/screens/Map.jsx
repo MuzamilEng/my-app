@@ -53,7 +53,6 @@ export default function Map() {
     };
     fetchData();
   }, []);
-  console.log(data, "data data");
   useEffect(() => {
     const fetchCurrentLocation = async () => {
       try {
@@ -202,18 +201,20 @@ export default function Map() {
         provider="google"
       >
         {currentLocation && (
-          <Circle
-            center={currentLocation}
-            radius={radius}
-            fillColor="rgba(0, 122, 255, 0.1)"
-            strokeColor="rgba(0, 122, 255, 0.3)"
-            strokeWidth={2}
-          />
+           <Marker
+           coordinate={currentLocation}>
+           <View>
+             <Image
+               source={require("../../assets/man.png")} // Update with the actual path to your image
+               style={styles.markerImage}
+             />
+           </View>
+         </Marker>
         )}
 
         {destination && (
           <Marker coordinate={destination} title="Destination">
-            <Image source={require("../../assets/user.png")} style={styles.markerImage} />
+            <Image source={require("../../assets/user2.png")} style={styles.markerImage} />
           </Marker>
         )}
 
@@ -285,9 +286,6 @@ export default function Map() {
         >
           <Text style={styles.infoTitle}>{selectedMarker.name || "User"}</Text>
           <Text style={styles.infoDistance}>Distance: {distance} km</Text>
-          <TouchableOpacity style={styles.infoButton}>
-            <Text style={styles.infoButtonText}>Contact</Text>
-          </TouchableOpacity>
         </Animated.View>
       )}
     </View>
@@ -301,8 +299,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   markerImage: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     resizeMode: "contain",
   },
   radiusControl: {
