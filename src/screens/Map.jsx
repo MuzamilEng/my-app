@@ -153,11 +153,11 @@ export default function Map() {
   };
   const getMarkerImage = (userType, isCurrentUser) => {
     if (isCurrentUser) {
-      return require("../../assets/user.png");
+      return require("../../assets/user2.png");
     }
     return userType === "rider"
-      ? require("../../assets/car.png")
-      : require("../../assets/user.png");
+      ? require("../../assets/car2.png")
+      : require("../../assets/user2.png");
   };
   const onPlaceSelected = (details) => {
     const { lat, lng } = details.geometry.location;
