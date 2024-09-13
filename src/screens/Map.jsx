@@ -20,6 +20,7 @@ import Slider from "@react-native-community/slider";
 export default function Map() {
   const [userData, setUserData] = useState({});
   const [radius, setRadius] = useState(10000);
+  const { userInfo, setUserInfo } = useGlobalState();
   const [getUserByType, { isError, isLoading, data }] = useGetAllUsersMutation();
   const [region, setRegion] = useState({
     latitude: 31.5204,
@@ -205,7 +206,7 @@ export default function Map() {
            coordinate={currentLocation}>
            <View>
              <Image
-               source={require("../../assets/man.png")} // Update with the actual path to your image
+               source={require(userInfo?.userType === "user" ? "../../assets/man.png" : "../../assets/car4.png" )} // Update with the actual path to your image
                style={styles.markerImage}
              />
            </View>
